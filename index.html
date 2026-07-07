@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數位學習資源導航系統</title>
+    <!-- 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 載入 Font Awesome 字型圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google 字型 Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        edu: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- 導覽列 -->
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-md shadow-blue-500/20">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">智慧數位學習空間</span>
+                        <span class="hidden sm:inline-block text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full ml-2 font-medium">Smart EduHub</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleAddModal(true)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition duration-200 flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-plus"></i> <span>新增教材</span>
+                    </button>
+                    <button onclick="toggleManageModal(true)" class="border border-slate-200 hover:bg-slate-50 text-slate-600 p-2 rounded-xl text-sm transition duration-200" title="匯入/匯出教材">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero 橫幅區 -->
+    <header class="bg-gradient-to-b from-blue-50 via-indigo-50/30 to-transparent py-10 sm:py-14 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mb-4 animate-pulse">
+                <i class="fa-solid fa-sparkles"></i> AI 賦能・精準學習
+            </span>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                客製化 <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">數位學習資源導航</span>
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                專為親師生打造的跨科目資源地圖。點擊按鈕立即前往對應的 AI 互動學習環境，支援 QR Code 投影與即時分享！
+            </p>
+
+            <!-- 搜尋框 -->
+            <div class="mt-8 max-w-xl mx-auto relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-35 transition duration-300"></div>
+                <div class="relative bg-white rounded-2xl flex items-center px-4 shadow-sm border border-slate-200">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-lg mr-3"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="搜尋關鍵字、教材名稱或科目分類..." class="w-full py-4 bg-transparent focus:outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base">
+                    <button onclick="clearSearch()" id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex-grow">
+        <!-- 分類標籤頁 -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-8" id="categoryTabs">
+            <!-- 動態生成分類標籤 -->
+        </div>
+
+        <!-- 資源卡片列表 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="resourcesGrid">
+            <!-- 動態生成卡片 -->
+        </div>
+
+        <!-- 空白狀態提示 -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <div class="w-20 h-20 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-regular fa-folder-open text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700">找不到相符的資源</h3>
+            <p class="text-slate-500 text-sm mt-1">請嘗試更換搜尋關鍵字或分類標籤</p>
+            <button onclick="resetFilters()" class="mt-4 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl text-sm font-medium transition duration-150">
+                重設所有條件
+            </button>
+        </div>
+    </main>
+
+    <!-- 彈出視窗 1：新增/編輯教材 Modal -->
+    <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-folder-plus"></i> <span id="modalTitle">新增數位教材</span>
+                </h3>
+                <button onclick="toggleAddModal(false)" class="text-white/80 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form id="resourceForm" onsubmit="saveResource(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editIndex" value="-1">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">資源名稱 *</label>
+                    <input type="text" id="inputTitle" required placeholder="例如：重組句子製作系統" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">資源連結 URL *</label>
+                    <input type="url" id="inputUrl" required placeholder="https://..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">科目分類 *</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="inputCategory" onchange="handleCategorySelect()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm">
+                            <option value="國語文">國語文</option>
+                            <option value="英語文">英語文</option>
+                            <option value="閱讀理解">閱讀理解</option>
+                            <option value="跨領域">跨領域</option>
+                            <option value="custom">自訂分類...</option>
+                        </select>
+                        <input type="text" id="customCategoryInput" placeholder="請輸入新分類" class="hidden w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">學科色系 (UI呈現)</label>
+                    <div class="grid grid-cols-4 gap-2" id="colorPicker">
+                        <!-- 動態填充顏色選擇 -->
+                    </div>
+                    <input type="hidden" id="inputColor" value="blue">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">簡短描述</label>
+                    <textarea id="inputDesc" rows="3" placeholder="請輸入此學習資源的功用、適合年級等描述..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm resize-none"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="toggleAddModal(false)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm font-medium transition">取消</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition">儲存教材</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 彈出視窗 2：資料管理 Modal (匯入/匯出) -->
+    <div id="manageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
+            <div class="bg-slate-800 px-6 py-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-database"></i> 教材庫備份與管理
+                </h3>
+                <button onclick="toggleManageModal(false)" class="text-white/80 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-slate-500">
+                    您可以將此平台建立好的分類教材庫匯出成備份文字，或匯入至其他裝置/瀏覽器。
+                </p>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">教材 JSON 資料碼</label>
+                    <textarea id="backupDataArea" readonly class="w-full h-32 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-600 focus:outline-none"></textarea>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copyBackupData()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i> 複製備份碼
+                    </button>
+                    <button onclick="importDataPrompt()" class="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-import"></i> 匯入教材資料
+                    </button>
+                </div>
+                <hr class="border-slate-100">
+                <div class="flex justify-between items-center bg-rose-50 p-4 rounded-xl border border-rose-100">
+                    <div>
+                        <h4 class="text-xs font-bold text-rose-800">還原出廠預設值</h4>
+                        <p class="text-[10px] text-rose-600 mt-0.5">這會刪除您所有自訂教材，並復原至最初載入的3項連結</p>
+                    </div>
+                    <button onclick="restoreDefaults()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                        重設
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 彈出式 Toast 通知元件 -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <span id="toastIcon" class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
+        <span id="toastMessage" class="text-sm font-medium">提示訊息</span>
+    </div>
+
+    <!-- 彈出視窗 3：QR Code 投影分享 -->
+    <div id="qrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" onclick="closeQrModal(event)">
+        <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl overflow-hidden p-6 text-center transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-slate-800" id="qrTitle">分享教材 QR Code</h4>
+                <button onclick="closeQrModal()" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <!-- QR Code 圖片展示 -->
+            <div class="bg-slate-50 p-4 rounded-xl inline-block mb-4 border border-slate-100">
+                <img id="qrImage" src="" alt="QR Code" class="w-48 h-48 mx-auto">
+            </div>
+            <p class="text-xs text-slate-500 mb-4 break-all px-2" id="qrUrlText"></p>
+            <div class="flex gap-2">
+                <button id="qrCopyBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl text-xs font-bold transition">
+                    複製教材網址
+                </button>
+                <a id="qrOpenBtn" target="_blank" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+                    直接前往 <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400 mt-auto">
+        <p>© 2026 數位學習資源導航系統 · 教育科技好幫手</p>
+        <p class="mt-1">整合 Gemini 智慧共享成果，打造無縫接軌的課堂互動</p>
+    </footer>
+
+    <script>
+        // 預設的三個教材連結
+        const defaultResources = [
+            {
+                title: "重組句子製作系統",
+                url: "https://share.gemini.google/rfR90Exz6RGz",
+                category: "國語文",
+                color: "blue",
+                desc: "幫助學生練習漢語語句重組。透過引導式的步驟，強化句型結構邏輯，提升作文與閱讀素養。"
+            },
+            {
+                title: "通用性閱讀測驗",
+                url: "https://share.gemini.google/uJeTF9VNOXvK",
+                category: "閱讀理解",
+                color: "indigo",
+                desc: "不限文體與年級的閱讀理解評量架構，透過多層次提問設計，全面驗收與診斷學生的理解深度。"
+            },
+            {
+                title: "英文互動式學習單",
+                url: "https://gemini.google.com/share/32c9d05a4173",
+                category: "英語文",
+                color: "emerald",
+                desc: "極富創意的英文單字與文法互動式課堂學習單。讓孩子一邊玩一邊吸收，大幅提高課堂專注力與英語聽說讀寫能力。"
+            }
+        ];
+
+        // 系統色彩盤
+        const colors = {
+            blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100', hoverBorder: 'hover:border-blue-300', btn: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500', badge: 'bg-blue-100/70 text-blue-800' },
+            indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100', hoverBorder: 'hover:border-indigo-300', btn: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500', badge: 'bg-indigo-100/70 text-indigo-800' },
+            emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100', hoverBorder: 'hover:border-emerald-300', btn: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500', badge: 'bg-emerald-100/70 text-emerald-800' },
+            violet: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-100', hoverBorder: 'hover:border-violet-300', btn: 'bg-violet-600 hover:bg-violet-700 focus:ring-violet-500', badge: 'bg-violet-100/70 text-violet-800' },
+            rose: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100', hoverBorder: 'hover:border-rose-300', btn: 'bg-rose-600 hover:bg-rose-700 focus:ring-rose-500', badge: 'bg-rose-100/70 text-rose-800' },
+            amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100', hoverBorder: 'hover:border-amber-300', btn: 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500', badge: 'bg-amber-100/70 text-amber-800' },
+            teal: { bg: 'bg-teal-50', text: 'text-teal-600', border: 'border-teal-100', hoverBorder: 'hover:border-teal-300', btn: 'bg-teal-600 hover:bg-teal-700 focus:ring-teal-500', badge: 'bg-teal-100/70 text-teal-800' },
+            slate: { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-100', hoverBorder: 'hover:border-slate-300', btn: 'bg-slate-600 hover:bg-slate-700 focus:ring-slate-500', badge: 'bg-slate-200 text-slate-800' }
+        };
+
+        let resources = [];
+        let currentCategory = "全部";
+        let searchQuery = "";
+
+        // 系統初始化
+        window.onload = function() {
+            initData();
+            renderColorPicker();
+            renderCategories();
+            renderResources();
+            updateBackupArea();
+        };
+
+        function initData() {
+            const localData = localStorage.getItem('edu_hub_resources');
+            if (localData) {
+                try {
+                    resources = JSON.parse(localData);
+                } catch(e) {
+                    resources = [...defaultResources];
+                }
+            } else {
+                resources = [...defaultResources];
+                saveToLocal();
+            }
+        }
+
+        function saveToLocal() {
+            localStorage.setItem('edu_hub_resources', JSON.stringify(resources));
+            updateBackupArea();
+        }
+
+        function renderColorPicker() {
+            const container = document.getElementById('colorPicker');
+            container.innerHTML = '';
+            Object.keys(colors).forEach((colorName) => {
+                const isSelected = colorName === 'blue';
+                const div = document.createElement('button');
+                div.type = 'button';
+                div.onclick = () => selectColor(colorName);
+                div.id = `color-btn-${colorName}`;
+                div.className = `h-8 rounded-lg flex items-center justify-center border-2 transition ${colors[colorName].bg} ${colors[colorName].border} ${isSelected ? 'border-slate-900 ring-2 ring-slate-900/10' : 'border-transparent'}`;
+                
+                const dot = document.createElement('span');
+                dot.className = `w-4 h-4 rounded-full bg-${colorName === 'slate' ? 'slate-500' : (colorName === 'amber' ? 'amber-500' : colorName + '-500')}`;
+                div.appendChild(dot);
+                
+                container.appendChild(div);
+            });
+        }
+
+        function selectColor(colorName) {
+            document.getElementById('inputColor').value = colorName;
+            Object.keys(colors).forEach(c => {
+                const btn = document.getElementById(`color-btn-${c}`);
+                if (btn) {
+                    if (c === colorName) {
+                        btn.className = btn.className.replace('border-transparent', 'border-slate-900 ring-2 ring-slate-900/10');
+                    } else {
+                        btn.className = btn.className.replace(/border-slate-900/g, 'border-transparent').replace(/ring-2 ring-slate-900\/10/g, '');
+                    }
+                }
+            });
+        }
+
+        function renderCategories() {
+            const tabsContainer = document.getElementById('categoryTabs');
+            tabsContainer.innerHTML = '';
+
+            // 統計各類別數量
+            const categories = ["全部"];
+            resources.forEach(r => {
+                if (!categories.includes(r.category)) {
+                    categories.push(r.category);
+                }
+            });
+
+            categories.forEach(cat => {
+                const count = cat === "全部" ? resources.length : resources.filter(r => r.category === cat).length;
+                const isActive = currentCategory === cat;
+                const btn = document.createElement('button');
+                btn.onclick = () => filterCategory(cat);
+                
+                if (isActive) {
+                    btn.className = "bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium transition duration-150 shadow-sm flex items-center gap-1.5";
+                } else {
+                    btn.className = "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 px-4 py-2 rounded-xl text-sm font-medium transition duration-150 flex items-center gap-1.5";
+                }
+
+                btn.innerHTML = `${cat} <span class="${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'} px-2 py-0.5 rounded-full text-xs font-semibold">${count}</span>`;
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            renderCategories();
+            renderResources();
+        }
+
+        function handleSearch() {
+            const input = document.getElementById('searchInput');
+            searchQuery = input.value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clearBtn');
+            if (searchQuery) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderResources();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchQuery = '';
+            document.getElementById('clearBtn').classList.add('hidden');
+            renderResources();
+        }
+
+        function resetFilters() {
+            clearSearch();
+            currentCategory = "全部";
+            renderCategories();
+            renderResources();
+        }
+
+        function renderResources() {
+            const grid = document.getElementById('resourcesGrid');
+            const emptyState = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            // 篩選與搜尋
+            const filtered = resources.filter(res => {
+                const matchCat = currentCategory === "全部" || res.category === currentCategory;
+                const matchSearch = res.title.toLowerCase().includes(searchQuery) || 
+                                    res.category.toLowerCase().includes(searchQuery) ||
+                                    res.desc.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            filtered.forEach((res, index) => {
+                // 取得對應的主題色彩，若不存在則給予預設
+                const theme = colors[res.color] || colors.slate;
+                const resourceOriginalIndex = resources.indexOf(res);
+
+                const card = document.createElement('div');
+                card.className = `group bg-white rounded-2xl border ${theme.border} ${theme.hoverBorder} p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden`;
+                
+                // 卡片微光背景裝飾
+                const glow = document.createElement('div');
+                glow.className = `absolute -top-12 -right-12 w-24 h-24 rounded-full ${theme.bg} opacity-50 blur-xl group-hover:scale-150 transition-transform duration-500`;
+                card.appendChild(glow);
+
+                // 卡片本體內容
+                const innerContent = `
+                    <div class="relative z-10 flex-grow">
+                        <!-- 類別與操作按鈕 -->
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold ${theme.badge}">
+                                <i class="fa-solid fa-tag text-[10px]"></i> ${res.category}
+                            </span>
+                            <div class="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition duration-150">
+                                <button onclick="editResource(${resourceOriginalIndex})" class="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-slate-700 rounded-lg transition" title="編輯">
+                                    <i class="fa-solid fa-pen text-xs"></i>
+                                </button>
+                                <button onclick="deleteResource(${resourceOriginalIndex})" class="p-1.5 hover:bg-rose-50 text-slate-500 hover:text-rose-600 rounded-lg transition" title="刪除">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 標題與簡介 -->
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-slate-900 group-hover:translate-x-0.5 transition duration-150 flex items-center gap-2">
+                            ${res.title}
+                        </h3>
+                        <p class="text-slate-500 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-3">
+                            ${res.desc || '尚未提供此資源的簡短描述。您可以編輯這張卡片並添加實用的說明文字！'}
+                        </p>
+                    </div>
+
+                    <!-- 動作按鈕區 (對應連結按鈕 & 互動分享按鈕) -->
+                    <div class="relative z-10 pt-4 border-t border-slate-100/80 flex items-center gap-2">
+                        <a href="${res.url}" target="_blank" class="flex-grow flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-white font-medium text-sm transition duration-200 ${theme.btn} shadow-sm">
+                            <span>前往探索</span> <i class="fa-solid fa-circle-arrow-right text-xs"></i>
+                        </a>
+                        <button onclick="shareQR('${res.url}', '${res.title}')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-600 rounded-xl transition" title="生成 QR Code 分享">
+                            <i class="fa-solid fa-qrcode text-base"></i>
+                        </button>
+                        <button onclick="copyLink('${res.url}')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-600 rounded-xl transition" title="複製連結">
+                            <i class="fa-regular fa-copy text-base"></i>
+                        </button>
+                    </div>
+                `;
+
+                card.innerHTML += innerContent;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleAddModal(show) {
+            const modal = document.getElementById('addModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.getElementById('resourceForm').reset();
+                document.getElementById('editIndex').value = "-1";
+                document.getElementById('modalTitle').textContent = "新增數位教材";
+                document.getElementById('customCategoryInput').classList.add('hidden');
+                selectColor('blue');
+            }
+        }
+
+        function handleCategorySelect() {
+            const select = document.getElementById('inputCategory');
+            const customInput = document.getElementById('customCategoryInput');
+            if (select.value === 'custom') {
+                customInput.classList.remove('hidden');
+                customInput.required = true;
+            } else {
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            }
+        }
+
+        function saveResource(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('inputTitle').value.trim();
+            const url = document.getElementById('inputUrl').value.trim();
+            let category = document.getElementById('inputCategory').value;
+            if (category === 'custom') {
+                category = document.getElementById('customCategoryInput').value.trim();
+            }
+            const color = document.getElementById('inputColor').value;
+            const desc = document.getElementById('inputDesc').value.trim();
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+
+            if (!title || !url || !category) {
+                showToast("請完整填寫必填欄位！", "fa-solid fa-triangle-exclamation text-rose-500");
+                return;
+            }
+
+            const payload = { title, url, category, color, desc };
+
+            if (editIndex === -1) {
+                // 新增
+                resources.push(payload);
+                showToast("教材新增成功！", "fa-solid fa-circle-check text-emerald-400");
+            } else {
+                // 編輯
+                resources[editIndex] = payload;
+                showToast("教材修改成功！", "fa-solid fa-circle-check text-emerald-400");
+            }
+
+            saveToLocal();
+            toggleAddModal(false);
+            renderCategories();
+            renderResources();
+        }
+
+        // 編輯教材回填
+        function editResource(index) {
+            const res = resources[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('modalTitle').textContent = "編輯數位教材資訊";
+
+            document.getElementById('inputTitle').value = res.title;
+            document.getElementById('inputUrl').value = res.url;
+            
+            const select = document.getElementById('inputCategory');
+            const customInput = document.getElementById('customCategoryInput');
+            
+            // 判斷原分類是否在預設選項中
+            const defaultOptions = ["國語文", "英語文", "閱讀理解", "跨領域"];
+            if (defaultOptions.includes(res.category)) {
+                select.value = res.category;
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            } else {
+                select.value = "custom";
+                customInput.classList.remove('hidden');
+                customInput.value = res.category;
+                customInput.required = true;
+            }
+
+            selectColor(res.color);
+            document.getElementById('inputDesc').value = res.desc || '';
+            toggleAddModal(true);
+        }
+
+        function deleteResource(index) {
+            if (confirm(`您確定要刪除「${resources[index].title}」這項學習資源嗎？`)) {
+                resources.splice(index, 1);
+                saveToLocal();
+                renderCategories();
+                renderResources();
+                showToast("資源已順利移除！", "fa-solid fa-trash text-amber-500");
+            }
+        }
+
+        // 一鍵複製
+        function copyLink(url) {
+            const textarea = document.createElement('textarea');
+            textarea.value = url;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("網址已成功複製到剪貼簿！", "fa-solid fa-circle-check text-emerald-400");
+            } catch (err) {
+                showToast("複製失敗，請手動複製網址。", "fa-solid fa-triangle-exclamation text-rose-500");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // QR Code 彈窗產生器
+        function shareQR(url, title) {
+            const qrImage = document.getElementById('qrImage');
+            const qrUrlText = document.getElementById('qrUrlText');
+            const qrTitle = document.getElementById('qrTitle');
+            const qrCopyBtn = document.getElementById('qrCopyBtn');
+            const qrOpenBtn = document.getElementById('qrOpenBtn');
+
+            qrTitle.textContent = `【${title}】分享條碼`;
+            qrUrlText.textContent = url;
+            // 呼叫開源 QR CODE API (https://api.qrserver.com/)
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}`;
+            
+            qrCopyBtn.onclick = () => copyLink(url);
+            qrOpenBtn.href = url;
+
+            const modal = document.getElementById('qrModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQrModal() {
+            const modal = document.getElementById('qrModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleManageModal(show) {
+            const modal = document.getElementById('manageModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                updateBackupArea();
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function updateBackupArea() {
+            document.getElementById('backupDataArea').value = JSON.stringify(resources, null, 2);
+        }
+
+        function copyBackupData() {
+            const area = document.getElementById('backupDataArea');
+            area.select();
+            try {
+                document.execCommand('copy');
+                showToast("備份資料碼已成功複製！", "fa-solid fa-circle-check text-emerald-400");
+            } catch(e) {
+                showToast("複製失敗，請手動圈選複製。", "fa-solid fa-triangle-exclamation text-rose-500");
+            }
+        }
+
+        function importDataPrompt() {
+            const rawInput = prompt("請貼上您匯出的 JSON 教材備份碼：");
+            if (rawInput === null) return; // 使用者按取消
+
+            try {
+                const parsed = JSON.parse(rawInput);
+                if (Array.isArray(parsed)) {
+                    // 基本欄位驗證
+                    const isValid = parsed.every(item => item.title && item.url && item.category);
+                    if (isValid) {
+                        resources = parsed;
+                        saveToLocal();
+                        renderCategories();
+                        renderResources();
+                        toggleManageModal(false);
+                        showToast("教材資料庫匯入成功！", "fa-solid fa-cloud-arrow-down text-emerald-400");
+                    } else {
+                        showToast("格式不完全正確（缺少名稱、URL或分類）！", "fa-solid fa-triangle-exclamation text-rose-500");
+                    }
+                } else {
+                    showToast("備份格式錯誤，必須為陣列 (Array)！", "fa-solid fa-triangle-exclamation text-rose-500");
+                }
+            } catch(err) {
+                showToast("解析備份碼失敗，請確認是否完整貼上！", "fa-solid fa-bug text-rose-500");
+            }
+        }
+
+        function restoreDefaults() {
+            if (confirm("這會清除您所有的自訂更動，回復至系統最原始的 3 個科目教材連結。確定繼續？")) {
+                resources = [...defaultResources];
+                saveToLocal();
+                currentCategory = "全部";
+                renderCategories();
+                renderResources();
+                toggleManageModal(false);
+                showToast("已回復至預設教材！", "fa-solid fa-clock-rotate-left text-slate-400");
+            }
+        }
+
+        function showToast(message, iconHtmlClass = "fa-solid fa-circle-check") {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+            toastIcon.innerHTML = `<i class="${iconHtmlClass}"></i>`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
