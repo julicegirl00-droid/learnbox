@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 載入 Font Awesome 字型圖示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google 字型 Inter -->
+    <!-- Google 字型 Inter & 繁體中文支援 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -63,8 +63,8 @@
                     <button onclick="toggleAddModal(true)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition duration-200 flex items-center gap-2 shadow-sm">
                         <i class="fa-solid fa-plus"></i> <span>新增教材</span>
                     </button>
-                    <button onclick="toggleManageModal(true)" class="border border-slate-200 hover:bg-slate-50 text-slate-600 p-2 rounded-xl text-sm transition duration-200" title="匯入/匯出教材">
-                        <i class="fa-solid fa-arrows-rotate"></i>
+                    <button onclick="toggleManageModal(true)" class="border border-slate-200 hover:bg-slate-50 text-slate-600 p-2 rounded-xl text-sm transition duration-200" title="備份及匯入匯出">
+                        <i class="fa-solid fa-database"></i>
                     </button>
                 </div>
             </div>
@@ -75,13 +75,13 @@
     <header class="bg-gradient-to-b from-blue-50 via-indigo-50/30 to-transparent py-10 sm:py-14 px-4">
         <div class="max-w-4xl mx-auto text-center">
             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mb-4 animate-pulse">
-                <i class="fa-solid fa-sparkles"></i> AI 賦能・精準學習
+                <i class="fa-solid fa-sparkles"></i> AI 創新・精準對接
             </span>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                 客製化 <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">數位學習資源導航</span>
             </h1>
             <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                專為親師生打造的跨科目資源地圖。點擊按鈕立即前往對應的 AI 互動學習環境，支援 QR Code 投影與即時分享！
+                一鍵前往 Gemini 智慧共享教材。專為親師生量身打造的跨科目資源地圖，支援生成 QR Code 課堂投影與即時鏈結分享！
             </p>
 
             <!-- 搜尋框 -->
@@ -89,7 +89,7 @@
                 <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-35 transition duration-300"></div>
                 <div class="relative bg-white rounded-2xl flex items-center px-4 shadow-sm border border-slate-200">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-lg mr-3"></i>
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="搜尋關鍵字、教材名稱或科目分類..." class="w-full py-4 bg-transparent focus:outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="搜尋關鍵字、教材名稱或學科分類..." class="w-full py-4 bg-transparent focus:outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base">
                     <button onclick="clearSearch()" id="clearBtn" class="hidden text-slate-400 hover:text-slate-600 p-1">
                         <i class="fa-solid fa-circle-xmark"></i>
                     </button>
@@ -207,7 +207,7 @@
                 <div class="flex justify-between items-center bg-rose-50 p-4 rounded-xl border border-rose-100">
                     <div>
                         <h4 class="text-xs font-bold text-rose-800">還原出廠預設值</h4>
-                        <p class="text-[10px] text-rose-600 mt-0.5">這會刪除您所有自訂教材，並復原至最初載入的3項連結</p>
+                        <p class="text-[10px] text-rose-600 mt-0.5">這會刪除您所有自訂教材，並復原至最新的 5 項內建教材連結</p>
                     </div>
                     <button onclick="restoreDefaults()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">
                         重設
@@ -217,18 +217,12 @@
         </div>
     </div>
 
-    <!-- 彈出式 Toast 通知元件 -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300">
-        <span id="toastIcon" class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
-        <span id="toastMessage" class="text-sm font-medium">提示訊息</span>
-    </div>
-
     <!-- 彈出視窗 3：QR Code 投影分享 -->
-    <div id="qrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" onclick="closeQrModal(event)">
+    <div id="qrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" onclick="closeQrModal()">
         <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl overflow-hidden p-6 text-center transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center mb-4">
-                <h4 class="font-bold text-slate-800" id="qrTitle">分享教材 QR Code</h4>
-                <button onclick="closeQrModal()" class="text-slate-400 hover:text-slate-600 transition">
+                <h4 class="font-bold text-slate-800 text-left pr-4" id="qrTitle">分享教材 QR Code</h4>
+                <button onclick="closeQrModal()" class="text-slate-400 hover:text-slate-600 transition flex-shrink-0">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
@@ -248,14 +242,39 @@
         </div>
     </div>
 
+    <!-- 彈出視窗 4：自訂確認對話框 (完全取代舊式的 confirm 視窗) -->
+    <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" onclick="closeConfirmModal(false)">
+        <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl overflow-hidden p-6 text-center transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-rose-100">
+                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-lg text-slate-800 mb-2" id="confirmTitle">確認操作</h4>
+            <p class="text-sm text-slate-500 mb-6" id="confirmMessage">確認要執行此操作嗎？</p>
+            <div class="flex gap-3">
+                <button onclick="closeConfirmModal(false)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl text-sm font-medium transition">
+                    取消
+                </button>
+                <button id="confirmYesBtn" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-sm font-medium transition">
+                    確定
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 彈出式 Toast 通知元件 -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <span id="toastIcon" class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
+        <span id="toastMessage" class="text-sm font-medium">提示訊息</span>
+    </div>
+
     <!-- 頁尾 -->
     <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400 mt-auto">
         <p>© 2026 數位學習資源導航系統 · 教育科技好幫手</p>
-        <p class="mt-1">整合 Gemini 智慧共享成果，打造無縫接軌的課堂互動</p>
+        <p class="mt-1">整合 Gemini 智慧共享成果，打造課堂最便利的隨點隨用工具組</p>
     </footer>
 
     <script>
-        // 預設的三個教材連結
+        // 最新整合的五項教材連結
         const defaultResources = [
             {
                 title: "重組句子製作系統",
@@ -277,6 +296,20 @@
                 category: "英語文",
                 color: "emerald",
                 desc: "極富創意的英文單字與文法互動式課堂學習單。讓孩子一邊玩一邊吸收，大幅提高課堂專注力與英語聽說讀寫能力。"
+            },
+            {
+                title: "無心之過【閱讀測驗】",
+                url: "https://share.gemini.google/corBEDqlSqXU",
+                category: "閱讀理解",
+                color: "violet",
+                desc: "專為《無心之過》故事精心規劃的深度閱讀測驗，引導孩子從人際衝突中思考誠實、同理與原諒等重要品德。"
+            },
+            {
+                title: "學生任務記分板",
+                url: "https://share.gemini.google/2Fhb1Ig1tqcl",
+                category: "跨領域",
+                color: "amber",
+                desc: "實用好玩的課堂任務記分板與小組積分器。用即時的動態排名激發學習主動性，提升團隊競合體驗與課堂趣味。"
             }
         ];
 
@@ -295,6 +328,7 @@
         let resources = [];
         let currentCategory = "全部";
         let searchQuery = "";
+        let confirmCallback = null;
 
         // 系統初始化
         window.onload = function() {
@@ -310,6 +344,11 @@
             if (localData) {
                 try {
                     resources = JSON.parse(localData);
+                    // 智慧防呆升級：如果檢測到用戶端舊版只有 3 個教材，自動幫用戶升級到最新 5 個教材
+                    if (resources.length === 3 && resources[0].title === "重組句子製作系統" && resources[2].title === "英文互動式學習單") {
+                        resources = [...defaultResources];
+                        saveToLocal();
+                    }
                 } catch(e) {
                     resources = [...defaultResources];
                 }
@@ -356,6 +395,46 @@
                 }
             });
         }
+
+        // 自訂確認視窗邏輯
+        function showCustomConfirm(title, message, callback, isDanger = true) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            
+            const confirmIcon = document.querySelector('#confirmModal i');
+            const iconContainer = document.querySelector('#confirmModal .rounded-full');
+            const yesBtn = document.getElementById('confirmYesBtn');
+            
+            if (isDanger) {
+                iconContainer.className = "w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-rose-100";
+                confirmIcon.className = "fa-solid fa-triangle-exclamation text-2xl";
+                yesBtn.className = "flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-sm font-medium transition";
+            } else {
+                iconContainer.className = "w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100";
+                confirmIcon.className = "fa-solid fa-circle-question text-2xl";
+                yesBtn.className = "flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-medium transition";
+            }
+
+            confirmCallback = callback;
+            
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal(confirmed) {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            if (confirmed && confirmCallback) {
+                confirmCallback();
+            }
+            confirmCallback = null;
+        }
+
+        // 初始化確認按鈕點擊事件
+        document.getElementById('confirmYesBtn').onclick = () => closeConfirmModal(true);
 
         function renderCategories() {
             const tabsContainer = document.getElementById('categoryTabs');
@@ -549,11 +628,9 @@
             const payload = { title, url, category, color, desc };
 
             if (editIndex === -1) {
-                // 新增
                 resources.push(payload);
                 showToast("教材新增成功！", "fa-solid fa-circle-check text-emerald-400");
             } else {
-                // 編輯
                 resources[editIndex] = payload;
                 showToast("教材修改成功！", "fa-solid fa-circle-check text-emerald-400");
             }
@@ -564,7 +641,6 @@
             renderResources();
         }
 
-        // 編輯教材回填
         function editResource(index) {
             const res = resources[index];
             document.getElementById('editIndex').value = index;
@@ -576,7 +652,6 @@
             const select = document.getElementById('inputCategory');
             const customInput = document.getElementById('customCategoryInput');
             
-            // 判斷原分類是否在預設選項中
             const defaultOptions = ["國語文", "英語文", "閱讀理解", "跨領域"];
             if (defaultOptions.includes(res.category)) {
                 select.value = res.category;
@@ -595,16 +670,21 @@
         }
 
         function deleteResource(index) {
-            if (confirm(`您確定要刪除「${resources[index].title}」這項學習資源嗎？`)) {
-                resources.splice(index, 1);
-                saveToLocal();
-                renderCategories();
-                renderResources();
-                showToast("資源已順利移除！", "fa-solid fa-trash text-amber-500");
-            }
+            const res = resources[index];
+            showCustomConfirm(
+                "刪除學習教材", 
+                `確定要將「${res.title}」這項教材從導航清單中刪除嗎？`, 
+                () => {
+                    resources.splice(index, 1);
+                    saveToLocal();
+                    renderCategories();
+                    renderResources();
+                    showToast("資源已順利移除！", "fa-solid fa-trash text-amber-500");
+                },
+                true
+            );
         }
 
-        // 一鍵複製
         function copyLink(url) {
             const textarea = document.createElement('textarea');
             textarea.value = url;
@@ -619,7 +699,6 @@
             document.body.removeChild(textarea);
         }
 
-        // QR Code 彈窗產生器
         function shareQR(url, title) {
             const qrImage = document.getElementById('qrImage');
             const qrUrlText = document.getElementById('qrUrlText');
@@ -627,9 +706,8 @@
             const qrCopyBtn = document.getElementById('qrCopyBtn');
             const qrOpenBtn = document.getElementById('qrOpenBtn');
 
-            qrTitle.textContent = `【${title}】分享條碼`;
+            qrTitle.textContent = `【${title}】投影分享條碼`;
             qrUrlText.textContent = url;
-            // 呼叫開源 QR CODE API (https://api.qrserver.com/)
             qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}`;
             
             qrCopyBtn.onclick = () => copyLink(url);
@@ -675,12 +753,11 @@
 
         function importDataPrompt() {
             const rawInput = prompt("請貼上您匯出的 JSON 教材備份碼：");
-            if (rawInput === null) return; // 使用者按取消
+            if (rawInput === null) return;
 
             try {
                 const parsed = JSON.parse(rawInput);
                 if (Array.isArray(parsed)) {
-                    // 基本欄位驗證
                     const isValid = parsed.every(item => item.title && item.url && item.category);
                     if (isValid) {
                         resources = parsed;
@@ -701,15 +778,20 @@
         }
 
         function restoreDefaults() {
-            if (confirm("這會清除您所有的自訂更動，回復至系統最原始的 3 個科目教材連結。確定繼續？")) {
-                resources = [...defaultResources];
-                saveToLocal();
-                currentCategory = "全部";
-                renderCategories();
-                renderResources();
-                toggleManageModal(false);
-                showToast("已回復至預設教材！", "fa-solid fa-clock-rotate-left text-slate-400");
-            }
+            showCustomConfirm(
+                "還原出廠預設值", 
+                "確定要刪除所有自訂教材，並復原成最新配置的 5 項內建教材連結嗎？", 
+                () => {
+                    resources = [...defaultResources];
+                    saveToLocal();
+                    currentCategory = "全部";
+                    renderCategories();
+                    renderResources();
+                    toggleManageModal(false);
+                    showToast("已回復至預設教材！", "fa-solid fa-clock-rotate-left text-slate-400");
+                },
+                true
+            );
         }
 
         function showToast(message, iconHtmlClass = "fa-solid fa-circle-check") {
