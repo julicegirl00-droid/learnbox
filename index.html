@@ -3,397 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智慧數位學習資源導航系統</title>
-    <!-- 引入 Tailwind CSS 實現現代化美觀排版 -->
+    <title>數位學習資源中心</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: #f8fafc;
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800">
 
-    <!-- 頂部導航欄 -->
-    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <!-- SVG 書本圖示 -->
-                <svg class="w-8 h-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-                <div>
-                    <h1 class="text-2xl font-bold tracking-wide">智慧數位學習資源導航系統</h1>
-                    <p class="text-blue-100 text-xs sm:text-sm mt-0.5">整合多元學科資源，助您高效自主學習</p>
-                    <p class="text-yellow-200 text-xs sm:text-sm mt-1 font-medium flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                        </svg>
-                        策劃製作：忠和國中 倪珮珍老師
-                    </p>
-                </div>
-            </div>
-            
-            <!-- 即時學習進度條 -->
-            <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 w-full md:w-80 border border-white/20">
-                <div class="flex justify-between items-center text-xs mb-1">
-                    <span class="font-medium text-blue-100">今日學習進度</span>
-                    <span id="progress-text" class="font-bold text-yellow-300">0 / 6 已完成 (0%)</span>
-                </div>
-                <div class="w-full bg-black/20 rounded-full h-2.5 overflow-hidden">
-                    <div id="progress-bar" class="bg-gradient-to-r from-yellow-400 to-green-400 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
-                </div>
-            </div>
+    <header class="bg-indigo-700 text-white py-12 shadow-md">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4">忠和國中資源班 數位學習資源中心</h1>
+            <p class="text-indigo-100 text-lg">倪珮珍老師 專屬教學資源平台：整合學習單、影片與數位工具，隨點隨學。</p>
         </div>
     </header>
 
-    <!-- 主體內容區 -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <main class="container mx-auto px-4 py-8">
         
-        <!-- 左側：篩選與控制面板 -->
-        <section class="lg:col-span-1 space-y-6">
-            <!-- 搜尋與篩選 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">搜尋與篩選</h3>
-                
-                <!-- 搜尋框 -->
-                <div class="relative">
-                    <input type="text" id="search-input" placeholder="搜尋學習資源名稱..." class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
-                    <span class="absolute left-3 top-2.5 text-slate-400">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </span>
-                </div>
-
-                <!-- 分類按鈕組 -->
-                <div class="flex flex-col gap-2">
-                    <button onclick="filterCategory('all')" id="btn-all" class="category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 transition-all flex items-center justify-between">
-                        <span>全部資源</span>
-                        <span id="count-all" class="bg-indigo-200 text-indigo-800 text-xs px-2.5 py-0.5 rounded-full font-bold">6</span>
-                    </button>
-                    <button onclick="filterCategory('chinese')" id="btn-chinese" class="category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium text-slate-600 hover:bg-slate-50 border border-transparent transition-all flex items-center justify-between">
-                        <span>國語與閱讀</span>
-                        <span id="count-chinese" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-bold">3</span>
-                    </button>
-                    <button onclick="filterCategory('english')" id="btn-english" class="category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium text-slate-600 hover:bg-slate-50 border border-transparent transition-all flex items-center justify-between">
-                        <span>英文與語言</span>
-                        <span id="count-english" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-bold">1</span>
-                    </button>
-                    <button onclick="filterCategory('tool')" id="btn-tool" class="category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium text-slate-600 hover:bg-slate-50 border border-transparent transition-all flex items-center justify-between">
-                        <span>教學與工具</span>
-                        <span id="count-tool" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-bold">2</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 智慧筆記本 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                        學習隨手記
-                    </h3>
-                    <span id="save-status" class="text-xs text-green-500 opacity-0 transition-opacity">已自動儲存</span>
-                </div>
-                <textarea id="notebook" placeholder="在這裡寫下您的學習重點、生字或想法，系統會自動幫您存檔喔！" class="w-full h-40 p-3 text-sm bg-amber-50/50 border border-amber-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 placeholder-slate-400 leading-relaxed resize-none"></textarea>
+        <!-- Category: 國語文 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-indigo-500 pl-4">國語文領域</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://share.gemini.google/rfR90Exz6RGz" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">重組句子製作系統</h3>
+                    <p class="text-gray-500 text-sm">提升語法結構與邏輯表達能力。</p>
+                </a>
+                <a href="https://share.gemini.google/uJeTF9VNOXvK" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">通用性閱讀測驗</h3>
+                    <p class="text-gray-500 text-sm">廣泛適用的閱讀理解訓練。</p>
+                </a>
+                <a href="https://share.gemini.google/corBEDqlSqXU" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">無心之過【閱讀測驗】</h3>
+                    <p class="text-gray-500 text-sm">深入文本的情境閱讀理解。</p>
+                </a>
+                <a href="https://share.gemini.google/W3Mup3t5VkBt" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">國語文學習單【國三】</h3>
+                    <p class="text-gray-500 text-sm">針對九年級設計的綜合練習。</p>
+                </a>
             </div>
         </section>
 
-        <!-- 右側：學習資源清單 -->
-        <section class="lg:col-span-3">
-            <!-- 搜尋提示或狀態列 -->
-            <div class="mb-4 flex justify-between items-center text-sm text-slate-500 px-1">
-                <span id="results-count">正在載入 6 個精選學習資源...</span>
-                <button onclick="resetAllProgress()" class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors">清除所有進度</button>
-            </div>
-
-            <!-- 卡片容器 -->
-            <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- 由 JavaScript 動態生成卡片內容 -->
-            </div>
-
-            <!-- 無搜尋結果提示 -->
-            <div id="no-results" class="hidden flex flex-col items-center justify-center py-16 text-slate-400">
-                <svg class="w-16 h-16 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <p class="text-lg font-medium">找不到相符的學習資源</p>
-                <p class="text-sm mt-1">請嘗試換個關鍵字搜尋或切換分類標籤</p>
+        <!-- Category: 英語與其他 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-emerald-500 pl-4">英語互動教學</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://gemini.google.com/share/32c9d05a4173" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-emerald-800 mb-2">英文互動式學習單</h3>
+                    <p class="text-gray-500 text-sm">互動式英語情境學習素材。</p>
+                </a>
             </div>
         </section>
 
+        <!-- Category: 社交技巧 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-amber-500 pl-4">社交技巧 (SEL) 學習單</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://share.gemini.google/VbYWGph9H8QY" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">不看狀況篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/OGgKMK5GGulz" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">已讀不回篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/ikUb3Z9PYPau" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">不說重點篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/jKSr80q8eSbw" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">沒有在聽篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Category: 教學工具 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-rose-500 pl-4">教學工具</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://share.gemini.google/2Fhb1Ig1tqcl" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-rose-800 mb-2">學生任務記分板</h3>
+                    <p class="text-gray-500 text-sm">課堂任務管理與記分系統。</p>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <!-- 自訂通知視窗 (Toast) -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
-        <span id="toast-icon" class="text-green-400">✔</span>
-        <span id="toast-message" class="text-sm font-medium">進度已儲存！</span>
-    </div>
-
-    <!-- 頁尾 -->
-    <footer class="bg-white border-t border-slate-100 py-6 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs sm:text-sm text-slate-400">
-            © 2026 智慧數位學習導航平台 · 專為多元自主學習設計的數位系統 · 策劃製作：忠和國中 倪珮珍老師
-        </div>
+    <footer class="bg-gray-800 text-gray-400 py-8 text-center text-sm">
+        <p>© 2026 數位學習資源中心. All rights reserved.</p>
     </footer>
-
-    <!-- JavaScript 邏輯控制 -->
-    <script>
-        // 1. 定義六大學習資源資料
-        const resources = [
-            {
-                id: "res-1",
-                title: "國語文學習單【國三】土",
-                url: "https://share.gemini.google/W3Mup3t5VkBt",
-                category: "chinese",
-                categoryName: "國語與閱讀",
-                badgeClass: "bg-red-50 text-red-700 border-red-100",
-                desc: "針對國三深度的《土》文學作品進行細緻解析、修辭引導，強化高階閱讀素養與文章組織能力。"
-            },
-            {
-                id: "res-2",
-                title: "無心之過【閱讀測驗】",
-                url: "https://share.gemini.google/corBEDqlSqXU",
-                category: "chinese",
-                categoryName: "國語與閱讀",
-                badgeClass: "bg-red-50 text-red-700 border-red-100",
-                desc: "生活情境式的閱讀理解，引導學生透過故事探討行為動機、道德觀，建立深度思辨與主旨摘錄能力。"
-            },
-            {
-                id: "res-3",
-                title: "通用性閱讀測驗",
-                url: "https://share.gemini.google/uJeTF9VNOXvK",
-                category: "chinese",
-                categoryName: "國語與閱讀",
-                badgeClass: "bg-red-50 text-red-700 border-red-100",
-                desc: "不分文本類型的核心閱讀測驗系統。著重訓練文章結構剖析、段落大意歸納與跨領域文本的理解。"
-            },
-            {
-                id: "res-4",
-                title: "英文互動式學習單",
-                url: "https://gemini.google.com/share/32c9d05a4173",
-                category: "english",
-                categoryName: "英文與語言",
-                badgeClass: "bg-teal-50 text-teal-700 border-teal-100",
-                desc: "富含沉浸感的互動式英語學習，包含精選主題詞彙、句型演練及情境應答，全方位磨練英文聽讀感官。"
-            },
-            {
-                id: "res-5",
-                title: "重組句子製作系統",
-                url: "https://share.gemini.google/rfR90Exz6RGz",
-                category: "tool",
-                categoryName: "教學與工具",
-                badgeClass: "bg-blue-50 text-blue-700 border-blue-100",
-                desc: "句法與語感的訓練神器！點擊即可產出打散的句子組件，引導學生重新拼湊，建立穩固的語感與邏輯。"
-            },
-            {
-                id: "res-6",
-                title: "學生任務記分板",
-                url: "https://share.gemini.google/2Fhb1Ig1tqcl",
-                category: "tool",
-                categoryName: "教學與工具",
-                badgeClass: "bg-blue-50 text-blue-700 border-blue-100",
-                desc: "課堂分組競賽、自主任務挑戰的榮譽看板。即時記錄各組分數，激發學習鬥志與團隊協作力。"
-            }
-        ];
-
-        // 2. 初始化變數與讀取 LocalStorage
-        let activeCategory = 'all';
-        let searchQuery = '';
-        let completedIds = JSON.parse(localStorage.getItem('completed_links') || '[]');
-
-        // 初始化筆記本內容
-        const notebookElement = document.getElementById('notebook');
-        notebookElement.value = localStorage.getItem('learning_notes') || '';
-
-        // 3. 網頁載入時初始化渲染
-        window.addEventListener('DOMContentLoaded', () => {
-            renderCards();
-            updateProgress();
-            
-            // 監聽筆記本輸入，即時自動存檔
-            let autoSaveTimeout;
-            notebookElement.addEventListener('input', () => {
-                localStorage.setItem('learning_notes', notebookElement.value);
-                const status = document.getElementById('save-status');
-                status.classList.remove('opacity-0');
-                status.classList.add('opacity-100');
-                
-                clearTimeout(autoSaveTimeout);
-                autoSaveTimeout = setTimeout(() => {
-                    status.classList.remove('opacity-100');
-                    status.classList.add('opacity-0');
-                }, 1500);
-            });
-
-            // 監聽搜尋輸入
-            document.getElementById('search-input').addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                renderCards();
-            });
-        });
-
-        // 4. 渲染學習卡片
-        function renderCards() {
-            const container = document.getElementById('cards-container');
-            const noResults = document.getElementById('no-results');
-            container.innerHTML = '';
-
-            // 篩選符合分類和搜尋字詞的卡片
-            const filtered = resources.filter(res => {
-                const matchesCategory = (activeCategory === 'all' || res.category === activeCategory);
-                const matchesSearch = res.title.toLowerCase().includes(searchQuery) || res.desc.toLowerCase().includes(searchQuery);
-                return matchesCategory && matchesSearch;
-            });
-
-            document.getElementById('results-count').innerText = `共找到 ${filtered.length} 個相關資源`;
-
-            if (filtered.length === 0) {
-                noResults.classList.remove('hidden');
-                container.classList.add('hidden');
-                return;
-            }
-
-            noResults.classList.add('hidden');
-            container.classList.remove('hidden');
-
-            filtered.forEach(res => {
-                const isCompleted = completedIds.includes(res.id);
-                
-                const card = document.createElement('div');
-                card.className = `bg-white p-6 rounded-2xl border ${isCompleted ? 'border-green-200 bg-green-50/10' : 'border-slate-100 hover:border-indigo-100'} shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group`;
-                
-                card.innerHTML = `
-                    <div>
-                        <!-- 分類標籤與狀態 -->
-                        <div class="flex items-center justify-between gap-2 mb-3.5">
-                            <span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${res.badgeClass}">
-                                ${res.categoryName}
-                            </span>
-                            <label class="flex items-center gap-1.5 cursor-pointer text-xs font-medium text-slate-500 hover:text-indigo-600 transition-colors">
-                                <input type="checkbox" onchange="toggleComplete('${res.id}')" ${isCompleted ? 'checked' : ''} class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
-                                <span>標記已完成</span>
-                            </label>
-                        </div>
-                        
-                        <!-- 標題 -->
-                        <h4 class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition-colors mb-2">
-                            ${res.title}
-                        </h4>
-                        
-                        <!-- 說明 -->
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                            ${res.desc}
-                        </p>
-                    </div>
-
-                    <!-- 動作按鈕 -->
-                    <div class="pt-4 border-t border-slate-50 flex items-center justify-between">
-                        <span class="text-xs ${isCompleted ? 'text-green-600 font-medium' : 'text-slate-400'} flex items-center gap-1">
-                            ${isCompleted ? '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg> 任務完成' : '尚未探索'}
-                        </span>
-                        
-                        <a href="${res.url}" target="_blank" onclick="trackClick('${res.id}')" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-1.5">
-                            進入學習
-                            <svg class="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                            </svg>
-                        </a>
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
-
-        // 5. 切換分類選單
-        function filterCategory(category) {
-            activeCategory = category;
-            
-            // 更新按鈕樣式
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.className = "category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium text-slate-600 hover:bg-slate-50 border border-transparent transition-all flex items-center justify-between";
-            });
-
-            const activeBtn = document.getElementById(`btn-${category}`);
-            if (activeBtn) {
-                activeBtn.className = "category-btn px-4 py-2.5 rounded-xl text-left text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 transition-all flex items-center justify-between";
-            }
-
-            renderCards();
-        }
-
-        // 6. 勾選/不勾選完成狀態
-        function toggleComplete(id) {
-            const index = completedIds.indexOf(id);
-            if (index > -1) {
-                completedIds.splice(index, 1);
-                showToast("已將該項目標記為未完成", "ℹ", "text-blue-400");
-            } else {
-                completedIds.push(id);
-                showToast("恭喜完成一個學習任務！", "✔", "text-green-400");
-            }
-
-            localStorage.setItem('completed_links', JSON.stringify(completedIds));
-            renderCards();
-            updateProgress();
-        }
-
-        // 7. 點擊「進入學習」按鈕時自動觸發進度記錄
-        function trackClick(id) {
-            if (!completedIds.includes(id)) {
-                completedIds.push(id);
-                localStorage.setItem('completed_links', JSON.stringify(completedIds));
-                renderCards();
-                updateProgress();
-            }
-        }
-
-        // 8. 即時更新上方進度條
-        function updateProgress() {
-            const total = resources.length;
-            const completedCount = completedIds.length;
-            const percentage = Math.round((completedCount / total) * 100);
-
-            document.getElementById('progress-text').innerText = `${completedCount} / ${total} 已完成 (${percentage}%)`;
-            document.getElementById('progress-bar').style.width = `${percentage}%`;
-
-            if (percentage === 100) {
-                showToast("太棒了！您已探索完所有精選學習資源！🎉", "🏆", "text-yellow-400");
-            }
-        }
-
-        // 9. 自訂通知彈窗邏輯
-        function showToast(message, icon = "✔", iconColorClass = "text-green-400") {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-icon').innerText = icon;
-            document.getElementById('toast-icon').className = `${iconColorClass} font-bold`;
-            document.getElementById('toast-message').innerText = message;
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
-
-        // 10. 重設所有進度
-        function resetAllProgress() {
-            if (completedIds.length === 0) {
-                showToast("目前沒有任何進度需要清除喔！", "ℹ", "text-blue-400");
-                return;
-            }
-            
-            // 使用自訂詢問提示（不使用 alert/confirm 以確保美觀與流暢）
-            if (confirm("確定要重設所有學習進度嗎？這會清除您所有的『已完成』勾選記錄。")) {
-                completedIds = [];
-                localStorage.setItem('completed_links', JSON.stringify(completedIds));
-                renderCards();
-                updateProgress();
-                showToast("已成功重設所有進度！", "🔄", "text-red-400");
-            }
-        }
-    </script>
 </body>
 </html>
