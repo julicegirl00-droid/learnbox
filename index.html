@@ -1,134 +1,101 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>數位學習資源中心</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4f46e5',
-                        secondary: '#ec4899',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
-    
-    <header class="bg-white shadow-sm border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 py-8">
-            <h1 class="text-4xl font-bold text-slate-900 tracking-tight">忠和國中 倪珮珍老師 教學天地</h1>
-            <p class="text-slate-600 mt-2">數位學習資源中心：精選優質教材與學習工具，助您輕鬆學習與教學</p>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-indigo-700 text-white py-12 shadow-md">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4">忠和國中資源班 數位學習資源中心</h1>
+            <p class="text-indigo-100 text-lg">倪珮珍老師 專屬教學資源平台：整合學習單、影片與數位工具，隨點隨學。</p>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-12">
+    <main class="container mx-auto px-4 py-8">
         
-        <!-- Category: Language & Reading -->
+        <!-- Category: 國語文 -->
         <section class="mb-12">
-            <h2 class="text-2xl font-semibold mb-6 flex items-center">
-                <span class="bg-indigo-100 text-indigo-700 p-2 rounded-lg mr-3">📚</span>
-                國語文與閱讀訓練
-            </h2>
-            
-            <!-- Grid Layout -->
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-indigo-500 pl-4">國語文領域</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="https://share.gemini.google/rfR90Exz6RGz" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">重組句子製作系統</h3>
-                    <p class="text-slate-500 text-sm mb-4">系統化句子重組練習</p>
-                    <span class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">立即前往</span>
+                <a href="https://share.gemini.google/rfR90Exz6RGz" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">重組句子製作系統</h3>
+                    <p class="text-gray-500 text-sm">提升語法結構與邏輯表達能力。</p>
                 </a>
-                <a href="https://share.gemini.google/uJeTF9VNOXvK" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">通用性閱讀測驗</h3>
-                    <p class="text-slate-500 text-sm mb-4">強化基礎閱讀與理解力</p>
-                    <span class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">立即前往</span>
+                <a href="https://share.gemini.google/uJeTF9VNOXvK" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">通用性閱讀測驗</h3>
+                    <p class="text-gray-500 text-sm">廣泛適用的閱讀理解訓練。</p>
                 </a>
-                <a href="https://share.gemini.google/corBEDqlSqXU" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">無心之過【閱讀測驗】</h3>
-                    <p class="text-slate-500 text-sm mb-4">透過情境探討深層閱讀理解</p>
-                    <span class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">立即前往</span>
+                <a href="https://share.gemini.google/corBEDqlSqXU" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">無心之過【閱讀測驗】</h3>
+                    <p class="text-gray-500 text-sm">深入文本的情境閱讀理解。</p>
                 </a>
-            </div>
-
-            <!-- Sub-Category: Grade 9 -->
-            <div class="mt-10 bg-slate-100 p-6 rounded-2xl border border-slate-200">
-                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
-                    <span class="bg-white text-indigo-600 p-2 rounded-lg mr-3 shadow-sm">📝</span>
-                    國三國語文學習單 (分課教材)
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="https://share.gemini.google/W3Mup3t5VkBt" target="_blank" class="block p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-slate-200">
-                        <h4 class="font-bold text-indigo-700 text-lg mb-1">【第一課】土</h4>
-                        <p class="text-slate-500 text-sm">國三階段重點語文教材</p>
-                    </a>
-                    <a href="https://share.gemini.google/RfttX1Z22qiI" target="_blank" class="block p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition border border-slate-200">
-                        <h4 class="font-bold text-indigo-700 text-lg mb-1">【第二課】與921說再見：20年的生命練習題</h4>
-                        <p class="text-slate-500 text-sm">結合生命教育的語文練習</p>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Category: Social Skills -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold mb-6 flex items-center">
-                <span class="bg-rose-100 text-rose-700 p-2 rounded-lg mr-3">🤝</span>
-                社交技巧【影片學習單】
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="https://share.gemini.google/VbYWGph9H8QY" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">溝通怎麼那麼難-不看狀況篇</h3>
-                    <p class="text-slate-500 text-sm mb-4">社交與溝通情境學習</p>
-                    <span class="inline-block px-4 py-2 bg-rose-600 text-white rounded-lg font-medium hover:bg-rose-700">立即前往</span>
+                <a href="https://share.gemini.google/W3Mup3t5VkBt" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">國語文學習單【國三】</h3>
+                    <p class="text-gray-500 text-sm">針對九年級設計的綜合練習。</p>
                 </a>
-                <a href="https://share.gemini.google/OGgKMK5GGulz" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">溝通怎麼那麼難-已讀不回篇</h3>
-                    <p class="text-slate-500 text-sm mb-4">社交與溝通情境學習</p>
-                    <span class="inline-block px-4 py-2 bg-rose-600 text-white rounded-lg font-medium hover:bg-rose-700">立即前往</span>
-                </a>
-                <a href="https://share.gemini.google/ikUb3Z9PYPau" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">溝通怎麼那麼難-不說重點篇</h3>
-                    <p class="text-slate-500 text-sm mb-4">社交與溝通情境學習</p>
-                    <span class="inline-block px-4 py-2 bg-rose-600 text-white rounded-lg font-medium hover:bg-rose-700">立即前往</span>
-                </a>
-                <a href="https://share.gemini.google/jKSr80q8eSbw" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">溝通怎麼那麼難-沒有在聽篇</h3>
-                    <p class="text-slate-500 text-sm mb-4">社交與溝通情境學習</p>
-                    <span class="inline-block px-4 py-2 bg-rose-600 text-white rounded-lg font-medium hover:bg-rose-700">立即前往</span>
+                <a href="https://github.com/julicegirl00-droid/learnbox/921.docx" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">與921說再見：20年的生命練習題</h3>
+                    <p class="text-gray-500 text-sm">深入生命教育的閱讀與反思練習。</p>
                 </a>
             </div>
         </section>
 
-        <!-- Category: English & Tools -->
+        <!-- Category: 英語與其他 -->
         <section class="mb-12">
-            <h2 class="text-2xl font-semibold mb-6 flex items-center">
-                <span class="bg-teal-100 text-teal-700 p-2 rounded-lg mr-3">🛠️</span>
-                英文與教學工具
-            </h2>
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-emerald-500 pl-4">英語互動教學</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="https://gemini.google.com/share/32c9d05a4173" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">英文互動式學習單</h3>
-                    <p class="text-slate-500 text-sm mb-4">強化英文學習效果</p>
-                    <span class="inline-block px-4 py-2 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700">立即前往</span>
-                </a>
-                <a href="https://share.gemini.google/2Fhb1Ig1tqcl" target="_blank" class="block p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <h3 class="font-bold text-lg mb-2">學生任務記分板</h3>
-                    <p class="text-slate-500 text-sm mb-4">管理學生學習進度</p>
-                    <span class="inline-block px-4 py-2 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700">立即前往</span>
+                <a href="https://gemini.google.com/share/32c9d05a4173" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-emerald-800 mb-2">英文互動式學習單</h3>
+                    <p class="text-gray-500 text-sm">互動式英語情境學習素材。</p>
                 </a>
             </div>
         </section>
 
+        <!-- Category: 社交技巧 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-amber-500 pl-4">社交技巧 (SEL) 學習單</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://share.gemini.google/VbYWGph9H8QY" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">不看狀況篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/OGgKMK5GGulz" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">已讀不回篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/ikUb3Z9PYPau" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">不說重點篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+                <a href="https://share.gemini.google/jKSr80q8eSbw" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-amber-800 mb-2">沒有在聽篇</h3>
+                    <p class="text-gray-500 text-sm">影片學習：溝通怎麼那麼難。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Category: 教學工具 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-l-4 border-rose-500 pl-4">教學工具</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://share.gemini.google/2Fhb1Ig1tqcl" target="_blank" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-rose-800 mb-2">學生任務記分板</h3>
+                    <p class="text-gray-500 text-sm">課堂任務管理與記分系統。</p>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <footer class="border-t border-slate-200 mt-12 py-8 text-center text-slate-500 text-sm">
-        <p>&copy; 2026 數位學習資源中心</p>
+    <footer class="bg-gray-800 text-gray-400 py-8 text-center text-sm">
+        <p>© 2026 數位學習資源中心. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
